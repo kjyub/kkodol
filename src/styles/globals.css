@@ -1,0 +1,60 @@
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+@import 'tailwindcss';
+@source '../components/**/*.{ts,tsx,mdx}';
+@source '../styles/**/*.{ts,tsx,mdx,css}';
+
+@theme {
+  --font-pretendard: 'Pretendard';
+}
+
+@custom-variant mouse (@media screen and (pointer: fine));
+@custom-variant touch (@media screen and (pointer: coarse));
+
+@layer base {
+  input,
+  textarea,
+  button {
+    appearance: none;
+    border-radius: 0;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    outline: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-color: none;
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  button {
+    @apply flex cursor-pointer items-center justify-center;
+  }
+  input:focus {
+    outline: none !important;
+    outline-offset: 2px !important;
+  }
+  select:focus {
+    outline: 2px solid transparent !important;
+    outline-offset: 2px !important;
+  }
+  button:focus {
+    outline: none !important;
+    outline-offset: none !important;
+  }
+  textarea:focus {
+    outline: none !important;
+    outline-offset: none !important;
+  }
+}
+
+@layer utilities {
+  .flex-center {
+    @apply items-center justify-center;
+  }
+}
