@@ -13,7 +13,7 @@ function MainSubLayout() {
         </main>
       </div>
       {/* 우측 필터링 */}
-      <div className="flex w-84 flex-col gap-4">
+      <div className="flex w-84 flex-col gap-4 max-md:hidden">
         <TalksFilter />
       </div>
     </div>
