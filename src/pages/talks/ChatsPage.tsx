@@ -1,10 +1,10 @@
-import React from 'react';
+import TalkChat from '@/components/talk/TalkChat';
 
 function ChatsPage() {
   return (
-    <div>
-      <h1>채팅 목록 페이지</h1>
-      <p>모든 채팅 내용이 표시될 곳입니다.</p>
+    <div className="container mx-auto p-4">
+      <h1 className="mb-6 text-2xl font-bold">모든 채팅 메시지</h1>
+      <TalkChat />
     </div>
   );
 }

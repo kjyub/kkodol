@@ -2,6 +2,7 @@ import { supabase } from './client';
 import type { Database } from '../types/supabase';
 
 type KkotalkChatInsert = Database['public']['Tables']['kkotalk_chat']['Insert'];
+type KkotalkChatRow = Database['public']['Tables']['kkotalk_chat']['Row'];
 
 export const getChatList = async () => {
   const { data, error } = await supabase.from('kkotalk_chat').select('*');
@@ -70,4 +71,37 @@ export const getChatMembers = async () => {
   }
 
   return data;
+};
+
+export const getChatCountsByUser = async () => {
+  const { data, error } = await supabase
+    .from('kkotalk_chat')
+    .select('user_name, count')
+    .order('count', { ascending: false });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+const PAGE_SIZE = 50; // 한 페이지에 불러올 메시지 수
+
+export const getKkotalkChatMessages = async ({ pageParam = 0 }: { pageParam?: number }) => {
+  const { data, error, count } = await supabase
+    .from('kkotalk_chat')
+    .select('*', { count: 'exact' })
+    .order('id', { ascending: false })
+    .range(pageParam, pageParam + PAGE_SIZE - 1);
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return {
+    data: data as KkotalkChatRow[],
+    nextOffset: (pageParam + PAGE_SIZE < (count || 0)) ? pageParam + PAGE_SIZE : undefined,
+    totalCount: count || 0,
+  };
 };
