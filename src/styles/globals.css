@@ -1,16 +1,18 @@
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
 @import 'tailwindcss';
-@source '../components/**/*.{ts,tsx,mdx}';
-@source '../styles/**/*.{ts,tsx,mdx,css}';
-
 @theme {
   --font-pretendard: 'Pretendard';
 }
 
+@custom-variant dark (&:is(.dark &, [data-theme="dark"] &));
 @custom-variant mouse (@media screen and (pointer: fine));
 @custom-variant touch (@media screen and (pointer: coarse));
 
 @layer base {
+  body {
+    @apply bg-stone-50 text-black transition-colors dark:bg-stone-900 dark:text-white;
+  }
+
   input,
   textarea,
   button {
