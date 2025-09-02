@@ -1,8 +1,6 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getKkotalkChatMessages } from '@/api/queries';
 
-const PAGE_SIZE = 50; // queries.ts와 동일하게 유지
-
 export function useKkotalkChatMessages() {
   return useInfiniteQuery({
     queryKey: ['kkotalkChatMessages'],
