@@ -12,7 +12,7 @@ function Header() {
         >
           KKODOL
         </Link>
-        <div className="flex gap-4 max-md:h-10 md:h-11">
+        <div className="flex gap-2 max-md:h-10 md:h-11">
           <ThemeSwitch />
           {/* 모바일 환경에선 데이터 불러올일이 없을 것 같아서 숨긴다. */}
           <Link to="/import" className="max-md:hidden">

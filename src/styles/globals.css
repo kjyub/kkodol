@@ -60,3 +60,10 @@
     @apply items-center justify-center;
   }
 }
+
+@utility container {
+  width: 100%;
+  max-width: 1024px; /* 원하는 고정 상한 */
+  margin-inline: auto; /* 가운데 정렬 */
+  padding-inline: 1rem; /* 좌우 패딩(원하면 조절) */
+}
