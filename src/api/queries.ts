@@ -1,15 +1,10 @@
 import { supabase } from './client';
+import type { Database } from '../types/supabase';
 
-// 카카오톡 CSV 데이터 형식에 맞춘 타입
-interface ChatMessage {
-  date: string;
-  user_name: string;
-  message: string;
-}
+type KkotalkChatInsert = Database['public']['Tables']['kkotalk_chat']['Insert'];
 
-// This is just an example, adjust it to your actual table and data structure
 export const getChatList = async () => {
-  const { data, error } = await supabase.from('chats').select('*');
+  const { data, error } = await supabase.from('kkotalk_chat').select('*');
 
   if (error) {
     throw new Error(error.message);
@@ -21,7 +16,7 @@ export const getChatList = async () => {
 const BATCH_SIZE = 10000; // 한 번에 삽입할 데이터 묶음 크기
 
 export const uploadChatData = async (
-  chatData: ChatMessage[],
+  chatData: KkotalkChatInsert[],
   onProgress: (uploadedCount: number, totalCount: number) => void,
 ) => {
   let totalInsertedCount = 0;
@@ -65,4 +60,14 @@ export const refreshChatMembers = async () => {
   if (error) {
     throw new Error(error.message);
   }
+};
+
+export const getChatMembers = async () => {
+  const { data, error } = await supabase.from('talk_users_mv').select('*');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
 };
