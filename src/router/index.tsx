@@ -6,7 +6,7 @@ import ImportPage from '@/pages/ImportPage';
 import CountPage from '@/pages/talks/CountPage';
 import ChatsPage from '@/pages/talks/ChatsPage';
 
-export const router = createBrowserRouter([
+const routes = [
   {
     element: <RootLayout />,
     errorElement: <NotFoundPage />,
@@ -30,9 +30,13 @@ export const router = createBrowserRouter([
         ],
       },
       {
-        path: '/import',
+        path: 'import',
         element: <ImportPage />,
       },
     ],
   },
-]);
+];
+
+export const router = createBrowserRouter(routes, {
+  basename: import.meta.env.BASE_URL,
+});

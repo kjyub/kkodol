@@ -2,14 +2,14 @@
   "name": "kkodol",
   "private": true,
   "version": "0.0.0",
-  "homepage": "https://YOUR_GITHUB_USERNAME.github.io/kkodol",
+  "homepage": "https://kjyub.github.io/kkodol",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "predeploy": "npm run build",
+    "predeploy": "npm run build && cp dist/index.html dist/404.html",
     "deploy": "gh-pages -d dist",
     "db:generate": "npx supabase gen types typescript --project-id 'rntlachrijygyqghayxi' --schema public > src/types/supabase.ts"
   },
