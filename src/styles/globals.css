@@ -9,10 +9,6 @@
 @custom-variant touch (@media screen and (pointer: coarse));
 
 @layer base {
-  body {
-    @apply bg-stone-50 text-black transition-colors dark:bg-stone-900 dark:text-white;
-  }
-
   input,
   textarea,
   button {
@@ -58,6 +54,13 @@
 @layer utilities {
   .flex-center {
     @apply items-center justify-center;
+  }
+
+  .background {
+    @apply bg-stone-50 dark:bg-stone-900;
+  }
+  .background.blur {
+    @apply backdrop-blur-sm;
   }
 }
 

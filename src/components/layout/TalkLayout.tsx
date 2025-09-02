@@ -7,13 +7,15 @@ function MainSubLayout() {
     <div className="flex gap-4">
       {/* 좌측 메인 */}
       <div className="flex flex-1 flex-col gap-4">
-        <TalkNavigation />
+        <div className="sticky top-16 z-10 pt-8">
+          <TalkNavigation />
+        </div>
         <main className="flex-grow">
           <Outlet />
         </main>
       </div>
       {/* 우측 필터링 */}
-      <div className="flex w-84 flex-col gap-4 max-md:hidden">
+      <div className="sticky top-16 flex w-84 flex-col gap-4 self-start pt-8 max-md:hidden">
         <TalksFilter />
       </div>
     </div>

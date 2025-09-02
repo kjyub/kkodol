@@ -16,7 +16,7 @@ export default function FilterBox({
         className ?? '',
       ])}
     >
-      <div className="absolute -top-3 left-3 bg-stone-50 px-2 py-0 text-stone-700 transition-colors dark:bg-stone-900 dark:text-stone-200">
+      <div className="background absolute -top-3 left-3 px-2 py-0 text-stone-700 transition-colors dark:text-stone-200">
         <span>{title}</span>
       </div>
       {children}

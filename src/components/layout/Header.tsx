@@ -4,7 +4,7 @@ import ThemeSwitch from '../theme/ThemeSwitch';
 
 function Header() {
   return (
-    <header className="bg-stone-50 p-4 dark:bg-stone-900">
+    <header className="sticky top-0 z-10 flex h-16 items-center px-4 backdrop-blur-sm">
       <div className="container mx-auto flex items-center justify-between">
         <Link
           to="/"
