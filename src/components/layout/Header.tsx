@@ -4,8 +4,8 @@ import ThemeSwitch from '../theme/ThemeSwitch';
 
 function Header() {
   return (
-    <header className="sticky top-0 z-10 flex h-16 items-center px-4 backdrop-blur-sm">
-      <div className="container mx-auto flex items-center justify-between">
+    <header className="sticky top-0 z-10 flex h-16 items-center backdrop-blur-sm">
+      <div className="container mx-auto flex items-center justify-between px-4">
         <Link
           to="/"
           className="text-2xl font-bold text-stone-900 dark:text-white"

@@ -5,7 +5,7 @@ function RootLayout() {
   return (
     <div className="">
       <Header />
-      <main className="container mx-auto px-4">
+      <main className="container mx-auto px-4 pb-4">
         <Outlet />
       </main>
     </div>

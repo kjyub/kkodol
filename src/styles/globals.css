@@ -51,6 +51,21 @@
   }
 }
 
+@layer components {
+  .talk-page {
+    @apply container mx-auto;
+  }
+  .talk-page .header {
+    @apply mb-6 flex flex-col;
+  }
+  .talk-page .header .title {
+    @apply text-2xl font-bold text-stone-950 dark:text-stone-50;
+  }
+  .talk-page .header .description {
+    @apply text-base text-stone-500 dark:text-stone-400;
+  }
+}
+
 @layer utilities {
   .flex-center {
     @apply items-center justify-center;
@@ -68,5 +83,4 @@
   width: 100%;
   max-width: 1024px; /* 원하는 고정 상한 */
   margin-inline: auto; /* 가운데 정렬 */
-  padding-inline: 1rem; /* 좌우 패딩(원하면 조절) */
 }
