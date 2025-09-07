@@ -63,6 +63,14 @@ export const refreshChatMembers = async () => {
   }
 };
 
+export const refreshChatCounts = async () => {
+  const { error } = await supabase.rpc('refresh_mv_user_msg_daily');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const getChatMembers = async () => {
   const { data, error } = await supabase.from('talk_users_mv').select('*');
 
@@ -73,11 +81,16 @@ export const getChatMembers = async () => {
   return data;
 };
 
-export const getChatCountsByUser = async () => {
-  const { data, error } = await supabase
-    .from('kkotalk_chat')
-    .select('user_name, count')
-    .order('count', { ascending: false });
+export const getChatCountsByUser = async (
+  dateStart?: string,
+  dateEnd?: string,
+  memberExcludes?: string[],
+) => {
+  const { data, error } = await supabase.rpc('get_user_message_counts', {
+    date_start: dateStart,
+    date_end: dateEnd,
+    exclude_users: memberExcludes,
+  });
 
   if (error) {
     throw new Error(error.message);
@@ -86,22 +99,33 @@ export const getChatCountsByUser = async () => {
   return data;
 };
 
-const PAGE_SIZE = 50; // 한 페이지에 불러올 메시지 수
-
-export const getKkotalkChatMessages = async ({ pageParam = 0 }: { pageParam?: number }) => {
-  const { data, error, count } = await supabase
-    .from('kkotalk_chat')
-    .select('*', { count: 'exact' })
-    .order('id', { ascending: false })
-    .range(pageParam, pageParam + PAGE_SIZE - 1);
+export const getChatMessages = async ({
+  dateStart,
+  dateEnd,
+  memberExcludes,
+  cursorDate,
+  cursorId,
+  limitRows,
+}: {
+  cursorDate?: string;
+  cursorId?: number;
+  limitRows?: number;
+  dateStart?: string;
+  dateEnd?: string;
+  memberExcludes?: string[];
+}) => {
+  const { data, error } = await supabase.rpc('get_chats_paginated', {
+    date_start: dateStart,
+    date_end: dateEnd,
+    exclude_users: memberExcludes,
+    cursor_date: cursorDate,
+    cursor_id: cursorId,
+    limit_rows: limitRows,
+  });
 
   if (error) {
     throw new Error(error.message);
   }
 
-  return {
-    data: data as KkotalkChatRow[],
-    nextOffset: (pageParam + PAGE_SIZE < (count || 0)) ? pageParam + PAGE_SIZE : undefined,
-    totalCount: count || 0,
-  };
+  return data;
 };

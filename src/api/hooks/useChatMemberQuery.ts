@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { getChatMembers } from '@/api/queries';
 
-export function useChatMembers() {
+export function useChatMemberQuery() {
   return useQuery({
     queryKey: ['chatMembers'],
     queryFn: getChatMembers,

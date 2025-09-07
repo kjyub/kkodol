@@ -35,26 +35,16 @@ export type Database = {
         }
         Relationships: []
       }
-      talk_users: {
+    }
+    Views: {
+      mv_user_msg_daily: {
         Row: {
-          id: number
-          nickname: string | null
-          unique_name: string | null
-        }
-        Insert: {
-          id?: number
-          nickname?: string | null
-          unique_name?: string | null
-        }
-        Update: {
-          id?: number
-          nickname?: string | null
-          unique_name?: string | null
+          cnt: number | null
+          day: string | null
+          user_name: string | null
         }
         Relationships: []
       }
-    }
-    Views: {
       talk_users_mv: {
         Row: {
           first_seen: string | null
@@ -66,6 +56,50 @@ export type Database = {
       }
     }
     Functions: {
+      get_chats: {
+        Args: {
+          date_end?: string
+          date_start?: string
+          exclude_users?: string[]
+        }
+        Returns: {
+          date: string
+          id: number
+          message: string | null
+          user_name: string | null
+        }[]
+      }
+      get_chats_paginated: {
+        Args: {
+          cursor_date?: string
+          cursor_id?: number
+          date_end?: string
+          date_start?: string
+          exclude_users?: string[]
+          limit_rows?: number
+        }
+        Returns: {
+          date: string
+          id: number
+          message: string | null
+          user_name: string | null
+        }[]
+      }
+      get_user_message_counts: {
+        Args: {
+          date_end?: string
+          date_start?: string
+          exclude_users?: string[]
+        }
+        Returns: {
+          message_count: number
+          user_name: string
+        }[]
+      }
+      refresh_mv_user_msg_daily: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
+      }
       refresh_talk_users_mv: {
         Args: Record<PropertyKey, never>
         Returns: undefined

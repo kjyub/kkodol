@@ -1,10 +1,10 @@
-import { useChatMembers } from '@/hooks/useChatMembers';
+import { useChatMemberQuery } from '@/api/hooks/useChatMemberQuery';
 import FilterBox from './Box';
 import ChipButton from '@/components/ui/ChipButton';
 import { useArrayParam } from '@/hooks/useArrayParam';
 
 export default function FilterMembers() {
-  const { data } = useChatMembers();
+  const { data } = useChatMemberQuery();
   const { valueSet, toggle } = useArrayParam('member_excludes');
 
   return (

@@ -1,10 +1,16 @@
-import { useChatMembers } from '@/hooks/useChatMembers';
+import { useChatCountQuery } from '@/api/hooks/useChatCountQuery';
 import type { Database } from '@/types/supabase';
 import { formatNumber } from '@/utils/format';
 import { useMemo } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
 export default function TalkCount() {
-  const { data } = useChatMembers();
+  const [searchParams, _setSearchParams] = useSearchParams();
+  const { data } = useChatCountQuery(
+    searchParams.get('date_start') ?? undefined,
+    searchParams.get('date_end') ?? undefined,
+    searchParams.get('member_excludes')?.split(',') ?? [],
+  );
   const maxCount = useMemo(
     () =>
       Math.max(...(data?.map((member) => member.message_count ?? 0) ?? [0])),
@@ -24,7 +30,7 @@ const Item = ({
   member,
   maxCount,
 }: {
-  member: Database['public']['Views']['talk_users_mv']['Row'];
+  member: Database['public']['Functions']['get_user_message_counts']['Returns'][number];
   maxCount: number;
 }) => {
   const count = useMemo(

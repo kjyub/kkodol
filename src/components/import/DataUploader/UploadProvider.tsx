@@ -4,6 +4,7 @@ import {
   uploadChatData,
   clearChatData,
   refreshChatMembers,
+  refreshChatCounts,
 } from '@/api/queries';
 import { formatNumber } from '@/utils/format';
 
@@ -83,6 +84,9 @@ export function UploadProvider({ children }: { children: ReactNode }) {
 
         // 채팅 멤버 새로고침
         await refreshChatMembers();
+
+        // 채팅 카운트 새로고침
+        await refreshChatCounts();
 
         setStep('complete');
       } catch (e: any) {
