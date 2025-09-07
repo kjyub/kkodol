@@ -1,11 +1,12 @@
-import Button from '@/components/ui/Button';
+import { useRef } from 'react';
 import { useChatMessages } from '@/api/hooks/useChatMessageQuery';
 import TalkChatMessage from './Message';
 import TalkChatLoading from './Loading';
 import { useSearchParams } from 'react-router-dom';
+import useInfiniteScroll from '@/hooks/useInfiniteScroll';
 
 export default function TalkChat() {
-  const [searchParams, _setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const {
     data,
     fetchNextPage,
@@ -19,6 +20,14 @@ export default function TalkChat() {
     searchParams.get('member_excludes')?.split(',') ?? [],
   );
 
+  const observerRef = useRef<HTMLDivElement>(null);
+  useInfiniteScroll(
+    observerRef as React.RefObject<HTMLDivElement>,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  );
+
   if (isLoading) return <TalkChatLoading />;
   if (error) return <div>채팅 메시지 로딩 오류: {error.message}</div>;
 
@@ -26,23 +35,20 @@ export default function TalkChat() {
 
   return (
     <div className="space-y-2">
+      {isFetchingNextPage && <TalkChatLoading />}
       {messages.length > 0 ? (
-        messages.map((message, index) => (
-          <TalkChatMessage key={message.id || index} message={message} />
+        messages.map((message) => (
+          <TalkChatMessage key={message.id} message={message} />
         ))
       ) : (
         <p className="text-center text-stone-500 dark:text-stone-400">
           채팅 메시지가 없습니다.
         </p>
       )}
-
-      {hasNextPage && (
-        <div className="mt-6 text-center">
-          <Button onClick={() => fetchNextPage()} disabled={isFetchingNextPage}>
-            {isFetchingNextPage ? '로딩 중...' : '더 불러오기'}
-          </Button>
-        </div>
-      )}
+      <div
+        ref={observerRef}
+        className="h-18 animate-pulse rounded-lg bg-stone-200/50 dark:bg-stone-800"
+      />
     </div>
   );
 }
