@@ -1,12 +1,15 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getChatMessages } from '@/api/queries';
 import { validateDate } from '@/utils/api';
+import { useAuth } from '@/context/AuthProvider';
 
 export function useChatMessages(
   dateStart?: string,
   dateEnd?: string,
   memberExcludes?: string[],
 ) {
+  const { isAuthenticated } = useAuth();
+
   return useInfiniteQuery({
     queryKey: ['kkotalkChatMessages', dateStart, dateEnd, memberExcludes],
     queryFn: ({ pageParam, queryKey }) =>
@@ -26,5 +29,6 @@ export function useChatMessages(
     },
     staleTime: 1000 * 60 * 1, // 1분 동안 fresh
     gcTime: 1000 * 60 * 5, // 5분 동안 캐시 유지
+    enabled: isAuthenticated, // 인증되었을 때만 쿼리 실행
   });
 }

@@ -5,11 +5,16 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import ImportPage from '@/pages/ImportPage';
 import CountPage from '@/pages/talks/CountPage';
 import ChatsPage from '@/pages/talks/ChatsPage';
+import { AuthGuard } from '@/components/auth/AuthGuard';
 import TagsPage from '@/pages/talks/TagsPage';
 
 const routes = [
   {
-    element: <RootLayout />,
+    element: (
+      <AuthGuard>
+        <RootLayout />
+      </AuthGuard>
+    ),
     errorElement: <NotFoundPage />,
     children: [
       {

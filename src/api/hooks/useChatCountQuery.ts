@@ -1,12 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
 import { getChatCountsByUser } from '@/api/queries';
 import { validateDate } from '@/utils/api';
+import { useAuth } from '@/context/AuthProvider';
 
 export function useChatCountQuery(
   dateStart?: string,
   dateEnd?: string,
   memberExcludes?: string[],
 ) {
+  const { isAuthenticated } = useAuth();
+
   return useQuery({
     queryKey: ['chatMembers', dateStart, dateEnd, memberExcludes],
     queryFn: ({ queryKey }) =>
@@ -21,5 +24,6 @@ export function useChatCountQuery(
       data
         .filter((member) => !!member.user_name)
         .sort((a, b) => (b?.message_count ?? 0) - (a.message_count ?? 0)),
+    enabled: isAuthenticated, // 인증되었을 때만 쿼리 실행
   });
 }
