@@ -50,6 +50,9 @@
   background-color: var(--cal-nav-hover);
 }
 
+.react-calendar__navigation button {
+  color: var(--cal-nav-label);
+}
 .react-calendar__navigation__label {
   font-weight: medium;
   font-size: 1rem;
