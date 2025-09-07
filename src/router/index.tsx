@@ -5,6 +5,7 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import ImportPage from '@/pages/ImportPage';
 import CountPage from '@/pages/talks/CountPage';
 import ChatsPage from '@/pages/talks/ChatsPage';
+import TagsPage from '@/pages/talks/TagsPage';
 
 const routes = [
   {
@@ -26,6 +27,10 @@ const routes = [
           {
             path: 'chats',
             element: <ChatsPage />,
+          },
+          {
+            path: 'tags',
+            element: <TagsPage />,
           },
         ],
       },

@@ -37,6 +37,16 @@ export type Database = {
       }
     }
     Views: {
+      mv_chat_tags: {
+        Row: {
+          date: string | null
+          id: number | null
+          message: string | null
+          tags: string[] | null
+          user_name: string | null
+        }
+        Relationships: []
+      }
       mv_user_msg_daily: {
         Row: {
           cnt: number | null
@@ -56,6 +66,14 @@ export type Database = {
       }
     }
     Functions: {
+      delete_chat_duplicates: {
+        Args: { keep?: string }
+        Returns: number
+      }
+      delete_chat_duplicates_batch: {
+        Args: { batch_size?: number; keep?: string }
+        Returns: number
+      }
       get_chats: {
         Args: {
           date_end?: string
@@ -85,6 +103,32 @@ export type Database = {
           user_name: string | null
         }[]
       }
+      get_mv_chat_tags_paginated: {
+        Args: {
+          cursor_date?: string
+          cursor_id?: number
+          date_end?: string
+          date_start?: string
+          exclude_users?: string[]
+          include_tags?: string[]
+          limit_rows?: number
+          tags_mode?: string
+        }
+        Returns: {
+          date: string
+          id: number
+          message: string
+          tags: string[]
+          user_name: string
+        }[]
+      }
+      get_tag_counts: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          tag: string
+          tag_count: number
+        }[]
+      }
       get_user_message_counts: {
         Args: {
           date_end?: string
@@ -95,6 +139,10 @@ export type Database = {
           message_count: number
           user_name: string
         }[]
+      }
+      refresh_mv_chat_tags: {
+        Args: Record<PropertyKey, never>
+        Returns: boolean
       }
       refresh_mv_user_msg_daily: {
         Args: Record<PropertyKey, never>

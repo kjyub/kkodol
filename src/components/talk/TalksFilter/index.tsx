@@ -2,6 +2,7 @@ import Button from '@/components/ui/Button';
 import FilterMembers from './Members';
 import { useSearchParams } from 'react-router-dom';
 import FilterDates from './Date';
+import FilterTags from './Tags';
 
 export default function TalksFilter() {
   const [, setSearchParams] = useSearchParams();
@@ -28,6 +29,7 @@ export default function TalksFilter() {
       </div>
       <FilterMembers />
       <FilterDates />
+      <FilterTags />
     </div>
   );
 }

@@ -71,6 +71,14 @@ export const refreshChatCounts = async () => {
   }
 };
 
+export const refreshChatTags = async () => {
+  const { error } = await supabase.rpc('refresh_mv_chat_tags');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+};
+
 export const getChatMembers = async () => {
   const { data, error } = await supabase.from('talk_users_mv').select('*');
 
@@ -121,6 +129,53 @@ export const getChatMessages = async ({
     cursor_date: cursorDate,
     cursor_id: cursorId,
     limit_rows: limitRows,
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTagCounts = async () => {
+  const { data, error } = await supabase.rpc('get_tag_counts');
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
+
+export const getTagMessages = async ({
+  dateStart,
+  dateEnd,
+  memberExcludes,
+  cursorDate,
+  cursorId,
+  limitRows,
+  tags,
+  mode = 'any',
+}: {
+  cursorDate?: string;
+  cursorId?: number;
+  limitRows?: number;
+  dateStart?: string;
+  dateEnd?: string;
+  memberExcludes?: string[];
+  tags?: string[];
+  mode?: 'any' | 'all';
+}) => {
+  const { data, error } = await supabase.rpc('get_mv_chat_tags_paginated', {
+    date_start: dateStart,
+    date_end: dateEnd,
+    exclude_users: memberExcludes,
+    cursor_date: cursorDate,
+    cursor_id: cursorId,
+    limit_rows: limitRows,
+    include_tags: tags,
+    tags_mode: mode,
   });
 
   if (error) {

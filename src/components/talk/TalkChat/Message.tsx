@@ -16,7 +16,9 @@ export default function TalkChatMessage({
           {formatDateTime(message.date)}
         </p>
       </div>
-      <p className="text-stone-700 dark:text-stone-300">{message.message}</p>
+      <p className="wrap-break-word text-stone-700 dark:text-stone-300">
+        {message.message}
+      </p>
     </div>
   );
 }

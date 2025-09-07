@@ -1,12 +1,12 @@
 import { useRef } from 'react';
-import { useChatMessages } from '@/api/hooks/useChatMessageQuery';
-import TalkChatLoading from './Loading';
 import { useSearchParams } from 'react-router-dom';
 import useInfiniteScroll from '@/hooks/useInfiniteScroll';
+import { useTagMessageQuery } from '@/api/hooks/useTagMessageQuery';
 import { cn } from '@/utils/cn';
-import TalkChatMessage from './Message';
+import TalkChatLoading from '../TalkChat/Loading';
+import TalkChatMessage from '../TalkChat/Message';
 
-export default function TalkChat() {
+export default function TalkTag() {
   const [searchParams] = useSearchParams();
   const {
     data,
@@ -15,10 +15,11 @@ export default function TalkChat() {
     isFetchingNextPage,
     isLoading,
     error,
-  } = useChatMessages(
+  } = useTagMessageQuery(
     searchParams.get('date_start') ?? undefined,
     searchParams.get('date_end') ?? undefined,
     searchParams.get('member_excludes')?.split(',') ?? [],
+    searchParams.get('tags')?.split(',') ?? undefined,
   );
 
   const observerRef = useRef<HTMLDivElement>(null);

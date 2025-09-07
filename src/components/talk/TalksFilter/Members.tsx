@@ -4,7 +4,7 @@ import ChipButton from '@/components/ui/ChipButton';
 import { useArrayParam } from '@/hooks/useArrayParam';
 
 export default function FilterMembers() {
-  const { data } = useChatMemberQuery();
+  const { data, isLoading } = useChatMemberQuery();
   const { valueSet, toggle } = useArrayParam('member_excludes');
 
   return (
@@ -19,6 +19,14 @@ export default function FilterMembers() {
           {member.user_name}
         </ChipButton>
       ))}
+
+      {isLoading &&
+        Array.from({ length: 10 }).map((_, index) => (
+          <div
+            key={index}
+            className="h-[30px] animate-pulse rounded-full bg-stone-200/50 dark:bg-stone-800"
+          />
+        ))}
     </FilterBox>
   );
 }
