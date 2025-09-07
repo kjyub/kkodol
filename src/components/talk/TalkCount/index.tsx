@@ -33,7 +33,7 @@ const Item = ({
   );
 
   return (
-    <div className="flex flex-col gap-1 p-4">
+    <div className="flex flex-col gap-1 p-3">
       <div className="flex items-center justify-between">
         <span className="font-medium text-stone-900 dark:text-stone-100">
           {member.user_name}
@@ -42,7 +42,7 @@ const Item = ({
           {formatNumber(count)}
         </span>
       </div>
-      <div className="relative h-5 overflow-hidden rounded-full">
+      <div className="relative h-3 overflow-hidden rounded-full">
         <div className="absolute inset-0 z-0 bg-gradient-to-r from-blue-500 to-purple-500" />
         <div
           className="absolute inset-y-0 right-0 z-10 bg-stone-200 dark:bg-stone-700"

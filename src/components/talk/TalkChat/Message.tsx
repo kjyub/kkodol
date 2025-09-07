@@ -7,7 +7,7 @@ export default function TalkChatMessage({
   message: Database['public']['Tables']['kkotalk_chat']['Row'];
 }) {
   return (
-    <div className="rounded-lg bg-stone-200/50 p-3 dark:bg-stone-800">
+    <div className="rounded-lg bg-stone-200/50 px-3 py-2 dark:bg-stone-800">
       <div className="flex items-center justify-between">
         <p className="font-semibold text-stone-800 dark:text-stone-200">
           {message.user_name}
