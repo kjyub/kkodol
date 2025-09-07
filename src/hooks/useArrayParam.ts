@@ -9,6 +9,10 @@ export function useArrayParam(key: string) {
     return raw ? raw.split(',').filter(Boolean) : [];
   }, [searchParams, key]);
 
+  const value = useMemo(() => {
+    return values[0];
+  }, [values]);
+
   const setValues = useCallback(
     (nextVals: string[], opts?: { replace?: boolean }) => {
       const newSearchParams = new URLSearchParams(searchParams);
@@ -37,5 +41,22 @@ export function useArrayParam(key: string) {
 
   const clear = useCallback(() => setValues([]), [setValues]);
 
-  return { values, setValues, toggle, clear, valueSet };
+  const setMultiple = useCallback(
+    (updates: Record<string, string[]>) => {
+      const newSearchParams = new URLSearchParams(searchParams);
+
+      Object.entries(updates).forEach(([updateKey, nextVals]) => {
+        const uniq = [...new Set(nextVals)]; // 중복 제거
+        const newValues = uniq.join(',');
+
+        if (newValues) newSearchParams.set(updateKey, newValues);
+        else newSearchParams.delete(updateKey);
+      });
+
+      setSearchParams(newSearchParams, { replace: true });
+    },
+    [searchParams, setSearchParams],
+  );
+
+  return { value, values, setValues, toggle, clear, valueSet, setMultiple };
 }
