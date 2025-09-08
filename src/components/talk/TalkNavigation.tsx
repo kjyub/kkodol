@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import ChipButton from '../ui/ChipButton';
 import useHasScroll from '@/hooks/useHasScroll';
 import { cn } from '@/utils/cn';
