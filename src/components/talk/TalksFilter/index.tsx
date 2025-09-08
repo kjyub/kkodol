@@ -14,9 +14,9 @@ export default function TalksFilter() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex h-9 items-center justify-between">
-        <h3 className="flex items-center text-xl text-stone-700 dark:text-stone-200">
+        <h3 className="flex items-center text-stone-700 dark:text-stone-200">
           <i className="fa-solid fa-sliders mr-2 text-base"></i>
-          <span>필터</span>
+          <span className="text-lg">필터</span>
         </h3>
         <Button
           variant="outline"

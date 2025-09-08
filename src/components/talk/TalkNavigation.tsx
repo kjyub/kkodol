@@ -1,8 +1,10 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import ChipButton from '../ui/ChipButton';
 import useHasScroll from '@/hooks/useHasScroll';
 import { cn } from '@/utils/cn';
+import TalksFilter from './TalksFilter';
+import useDetectClose from '@/hooks/useDetectClose';
 
 export default function TalkNavigation() {
   const location = useLocation();
@@ -10,6 +12,10 @@ export default function TalkNavigation() {
   const {
     edges: { left, right },
   } = useHasScroll(navListRef as React.RefObject<HTMLElement>, true);
+
+  const mobileFilterRef = useRef<HTMLDivElement>(null);
+  const { isOpen: isMobileFilterOpen, setIsOpen: setIsMobileFilterOpen } =
+    useDetectClose(mobileFilterRef as React.RefObject<HTMLElement>);
 
   return (
     <nav className="flex h-9 max-w-full justify-between gap-1">
@@ -30,10 +36,17 @@ export default function TalkNavigation() {
         <Mask isShow={right} direction="right" />
       </div>
 
-      <div className="ml-2 shrink-0 md:hidden">
-        <ChipButton isActive={false} className="h-full">
+      <div ref={mobileFilterRef} className="ml-2 shrink-0 md:hidden">
+        <ChipButton
+          isActive={isMobileFilterOpen}
+          className="h-full"
+          onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
+        >
           필터
         </ChipButton>
+        <MobileFilterWrapper isOpen={isMobileFilterOpen}>
+          <TalksFilter />
+        </MobileFilterWrapper>
       </div>
     </nav>
   );
@@ -83,5 +96,32 @@ const Mask = ({
         { 'opacity-0': !isShow },
       ])}
     />
+  );
+};
+
+const MobileFilterWrapper = ({
+  isOpen,
+  children,
+}: {
+  isOpen: boolean;
+  children: React.ReactNode;
+}) => {
+  return (
+    <div
+      className={cn([
+        'absolute inset-x-0 top-[calc(100%+0.5rem)] h-[calc(100dvh-8rem)] overflow-hidden',
+        { 'pointer-events-none': !isOpen },
+      ])}
+    >
+      <div
+        className={cn([
+          'absolute inset-0 overflow-y-auto rounded-xl border border-stone-400 bg-stone-50 p-3 drop-shadow-xl dark:border-stone-800 dark:bg-stone-900',
+          'transition-transform duration-300',
+          { 'translate-x-[calc(100%+1rem)]': !isOpen },
+        ])}
+      >
+        {children}
+      </div>
+    </div>
   );
 };
