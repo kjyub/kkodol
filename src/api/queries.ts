@@ -2,7 +2,6 @@ import { supabase } from './client';
 import type { Database } from '../types/supabase';
 
 type KkotalkChatInsert = Database['public']['Tables']['kkotalk_chat']['Insert'];
-type KkotalkChatRow = Database['public']['Tables']['kkotalk_chat']['Row'];
 
 export const getChatList = async () => {
   const { data, error } = await supabase.from('kkotalk_chat').select('*');
