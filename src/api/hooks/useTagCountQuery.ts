@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getTagCounts } from '@/api/queries';
+import { getTagCounts } from '@/api/ky/queries';
 import { useAuth } from '@/context/AuthProvider';
 
 export function useTagCountQuery() {

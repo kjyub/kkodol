@@ -6,7 +6,7 @@ import {
   refreshChatMembers,
   refreshChatCounts,
   refreshChatTags,
-} from '@/api/queries';
+} from '@/api/ky/queries';
 import { formatNumber } from '@/utils/format';
 
 type UploadStep = 'select' | 'uploading' | 'complete';

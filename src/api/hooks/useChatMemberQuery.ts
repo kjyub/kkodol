@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getChatMembers } from '@/api/queries';
+import { getChatMembers } from '@/api/ky/queries';
 import { useAuth } from '@/context/AuthProvider';
 
 export function useChatMemberQuery() {

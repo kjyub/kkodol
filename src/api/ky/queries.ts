@@ -1,10 +1,12 @@
-import { supabase } from './client';
-import type { Database } from '../types/supabase';
+import instance from './client';
+import type { Database } from '../../types/supabase';
 
 type KkotalkChatInsert = Database['public']['Tables']['kkotalk_chat']['Insert'];
 
 export const getChatList = async () => {
-  const { data, error } = await supabase.from('kkotalk_chat').select('*');
+  const { data, error } = await instance<
+    Database['public']['Tables']['kkotalk_chat']['Row']
+  >({ url: '/kkotalk_chat', method: 'GET' });
 
   if (error) {
     throw new Error(error.message);
@@ -24,10 +26,15 @@ export const uploadChatData = async (
 
   for (let i = 0; i < totalCount; i += BATCH_SIZE) {
     const batch = chatData.slice(i, i + BATCH_SIZE);
-    const { data, error } = await supabase
-      .from('kkotalk_chat')
-      .insert(batch)
-      .select();
+    const { data, error } = await instance<
+      Database['public']['Tables']['kkotalk_chat']['Row'][]
+    >({
+      url: '/kkotalk_chat',
+      method: 'POST',
+      data: batch,
+      headers: { Prefer: 'return=representation' },
+    });
+    console.log(data, error);
 
     if (error) {
       console.error(`Batch ${i / BATCH_SIZE + 1} failed:`, error);
@@ -47,7 +54,10 @@ export const uploadChatData = async (
 };
 
 export const clearChatData = async () => {
-  const { error } = await supabase.from('kkotalk_chat').delete().neq('id', 0);
+  const { error } = await instance<
+    Database['public']['Tables']['kkotalk_chat']['Row']
+  >({ url: '/kkotalk_chat', method: 'DELETE' });
+  console.log(error);
 
   if (error) {
     throw new Error(error.message);
@@ -55,7 +65,9 @@ export const clearChatData = async () => {
 };
 
 export const refreshChatMembers = async () => {
-  const { error } = await supabase.rpc('refresh_talk_users_mv'); // 업로드 배치 끝난 뒤 1회 호출
+  const { error } = await instance<
+    Database['public']['Functions']['refresh_talk_users_mv']['Returns']
+  >({ url: '/rpc/refresh_talk_users_mv', method: 'POST' }); // 업로드 배치 끝난 뒤 1회 호출
 
   if (error) {
     throw new Error(error.message);
@@ -63,7 +75,9 @@ export const refreshChatMembers = async () => {
 };
 
 export const refreshChatCounts = async () => {
-  const { error } = await supabase.rpc('refresh_mv_user_msg_daily');
+  const { error } = await instance<
+    Database['public']['Functions']['refresh_mv_user_msg_daily']['Returns']
+  >({ url: '/rpc/refresh_mv_user_msg_daily', method: 'POST' });
 
   if (error) {
     throw new Error(error.message);
@@ -71,7 +85,9 @@ export const refreshChatCounts = async () => {
 };
 
 export const refreshChatTags = async () => {
-  const { error } = await supabase.rpc('refresh_mv_chat_tags');
+  const { error } = await instance<
+    Database['public']['Functions']['refresh_mv_chat_tags']['Returns']
+  >({ url: '/rpc/refresh_mv_chat_tags', method: 'POST' });
 
   if (error) {
     throw new Error(error.message);
@@ -79,7 +95,9 @@ export const refreshChatTags = async () => {
 };
 
 export const getChatMembers = async () => {
-  const { data, error } = await supabase.from('talk_users_mv').select('*');
+  const { data, error } = await instance<
+    Database['public']['Views']['talk_users_mv']['Row'][]
+  >({ url: '/talk_users_mv', method: 'GET' });
 
   if (error) {
     throw new Error(error.message);
@@ -93,10 +111,16 @@ export const getChatCountsByUser = async (
   dateEnd?: string,
   memberExcludes?: string[],
 ) => {
-  const { data, error } = await supabase.rpc('get_user_message_counts', {
-    date_start: dateStart,
-    date_end: dateEnd,
-    exclude_users: memberExcludes,
+  const { data, error } = await instance<
+    Database['public']['Functions']['get_user_message_counts']['Returns']
+  >({
+    url: '/rpc/get_user_message_counts',
+    method: 'POST',
+    data: {
+      date_start: dateStart,
+      date_end: dateEnd,
+      exclude_users: memberExcludes,
+    },
   });
 
   if (error) {
@@ -121,13 +145,19 @@ export const getChatMessages = async ({
   dateEnd?: string;
   memberExcludes?: string[];
 }) => {
-  const { data, error } = await supabase.rpc('get_chats_paginated', {
-    date_start: dateStart,
-    date_end: dateEnd,
-    exclude_users: memberExcludes,
-    cursor_date: cursorDate,
-    cursor_id: cursorId,
-    limit_rows: limitRows,
+  const { data, error } = await instance<
+    Database['public']['Functions']['get_chats']['Returns']
+  >({
+    url: '/rpc/get_chats_paginated',
+    method: 'POST',
+    data: {
+      date_start: dateStart,
+      date_end: dateEnd,
+      exclude_users: memberExcludes,
+      cursor_date: cursorDate,
+      cursor_id: cursorId,
+      limit_rows: limitRows,
+    },
   });
 
   if (error) {
@@ -138,7 +168,9 @@ export const getChatMessages = async ({
 };
 
 export const getTagCounts = async () => {
-  const { data, error } = await supabase.rpc('get_tag_counts');
+  const { data, error } = await instance<
+    Database['public']['Functions']['get_tag_counts']['Returns']
+  >({ url: '/rpc/get_tag_counts', method: 'POST' });
 
   if (error) {
     throw new Error(error.message);
@@ -166,15 +198,21 @@ export const getTagMessages = async ({
   tags?: string[];
   mode?: 'any' | 'all';
 }) => {
-  const { data, error } = await supabase.rpc('get_mv_chat_tags_paginated', {
-    date_start: dateStart,
-    date_end: dateEnd,
-    exclude_users: memberExcludes,
-    cursor_date: cursorDate,
-    cursor_id: cursorId,
-    limit_rows: limitRows,
-    include_tags: tags,
-    tags_mode: mode,
+  const { data, error } = await instance<
+    Database['public']['Functions']['get_mv_chat_tags_paginated']['Returns']
+  >({
+    url: '/rpc/get_mv_chat_tags_paginated',
+    method: 'POST',
+    data: {
+      date_start: dateStart,
+      date_end: dateEnd,
+      exclude_users: memberExcludes,
+      cursor_date: cursorDate,
+      cursor_id: cursorId,
+      limit_rows: limitRows,
+      include_tags: tags,
+      tags_mode: mode,
+    },
   });
 
   if (error) {

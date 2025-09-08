@@ -1,5 +1,5 @@
 import { useInfiniteQuery } from '@tanstack/react-query';
-import { getChatMessages } from '@/api/queries';
+import { getChatMessages } from '@/api/ky/queries';
 import { validateDate } from '@/utils/api';
 import { useAuth } from '@/context/AuthProvider';
 

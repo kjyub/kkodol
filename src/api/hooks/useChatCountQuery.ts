@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { getChatCountsByUser } from '@/api/queries';
+import { getChatCountsByUser } from '@/api/ky/queries';
 import { validateDate } from '@/utils/api';
 import { useAuth } from '@/context/AuthProvider';
 

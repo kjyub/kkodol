@@ -20,6 +20,8 @@
     "class-variance-authority": "0.7.1",
     "clsx": "^2.1.1",
     "dayjs": "1.11.18",
+    "jose": "6.1.0",
+    "ky": "1.10.0",
     "papaparse": "5.5.3",
     "react": "^19.1.1",
     "react-calendar": "6.0.0",
