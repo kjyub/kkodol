@@ -1,10 +1,11 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { useRef } from 'react';
 import ChipButton from '../ui/ChipButton';
 import useHasScroll from '@/hooks/useHasScroll';
 import { cn } from '@/utils/cn';
 
 export default function TalkNavigation() {
+  const location = useLocation();
   const navListRef = useRef<HTMLDivElement>(null);
   const {
     edges: { left, right },
@@ -14,9 +15,15 @@ export default function TalkNavigation() {
     <nav className="flex h-9 max-w-full justify-between gap-1">
       <div className="relative flex min-w-0 overflow-hidden rounded-full">
         <div ref={navListRef} className="flex min-w-0 gap-1 overflow-x-auto">
-          <Nav to="/">채팅 수</Nav>
-          <Nav to="/chats">채팅</Nav>
-          <Nav to="/tags">태그</Nav>
+          <Nav to="/" search={location.search}>
+            채팅 수
+          </Nav>
+          <Nav to="/chats" search={location.search}>
+            채팅
+          </Nav>
+          <Nav to="/tags" search={location.search}>
+            태그
+          </Nav>
         </div>
 
         <Mask isShow={left} direction="left" />
@@ -32,9 +39,24 @@ export default function TalkNavigation() {
   );
 }
 
-const Nav = ({ to, children }: { to: string; children: React.ReactNode }) => {
+const Nav = ({
+  to,
+  search,
+  children,
+}: {
+  to: string;
+  search: string;
+  children: React.ReactNode;
+}) => {
   return (
-    <NavLink to={to} end className="shrink-0">
+    <NavLink
+      to={{
+        pathname: to,
+        search: search,
+      }}
+      end
+      className="shrink-0"
+    >
       {({ isActive }) => (
         <ChipButton isActive={isActive} className="h-full">
           {children}
