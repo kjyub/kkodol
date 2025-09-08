@@ -6,15 +6,19 @@ import { useEffect, useState } from 'react';
 import { matchPath, useLocation } from 'react-router-dom';
 import { formatNumber } from '@/utils/format';
 
+const getIsTagsRoute = (pathname: string) => {
+  return !!matchPath({ path: '/tags' }, pathname);
+};
+
 export default function FilterTags() {
   const { pathname } = useLocation();
-  const [isTagsRoute, setIsTagsRoute] = useState(false);
+  const [isTagsRoute, setIsTagsRoute] = useState(getIsTagsRoute(pathname));
 
   const { data, isLoading } = useTagCountQuery();
   const { valueSet, toggle, clear } = useArrayParam('tags');
 
   useEffect(() => {
-    setIsTagsRoute(!!matchPath({ path: '/tags' }, pathname));
+    setIsTagsRoute(getIsTagsRoute(pathname));
   }, [pathname]);
 
   useEffect(() => {
