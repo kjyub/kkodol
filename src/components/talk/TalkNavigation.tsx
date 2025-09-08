@@ -1,5 +1,5 @@
-import { NavLink, useLocation } from 'react-router-dom';
-import { useRef } from 'react';
+import { NavLink, useLocation, useSearchParams } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import ChipButton from '../ui/ChipButton';
 import useHasScroll from '@/hooks/useHasScroll';
 import { cn } from '@/utils/cn';
@@ -39,10 +39,11 @@ export default function TalkNavigation() {
       <div ref={mobileFilterRef} className="ml-2 shrink-0 md:hidden">
         <ChipButton
           isActive={isMobileFilterOpen}
-          className="h-full"
+          className="relative h-full"
           onClick={() => setIsMobileFilterOpen(!isMobileFilterOpen)}
         >
           필터
+          <FilterCount />
         </ChipButton>
         <MobileFilterWrapper isOpen={isMobileFilterOpen}>
           <TalksFilter />
@@ -115,13 +116,39 @@ const MobileFilterWrapper = ({
     >
       <div
         className={cn([
-          'absolute inset-0 overflow-y-auto rounded-xl border border-stone-400 bg-stone-50 p-3 drop-shadow-xl dark:border-stone-800 dark:bg-stone-900',
+          'absolute inset-0 overflow-y-auto rounded-xl border border-stone-400 bg-stone-50 p-3 drop-shadow-xl dark:border-stone-600 dark:bg-stone-900',
           'transition-transform duration-300',
           { 'translate-x-[calc(100%+1rem)]': !isOpen },
         ])}
       >
         {children}
       </div>
+    </div>
+  );
+};
+
+const FilterCount = () => {
+  const [searchParams] = useSearchParams();
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    const keys = searchParams.keys();
+    let count = 0;
+    for (const key of keys) {
+      const value = searchParams.get(key);
+      const values = value?.split(',');
+      if (values) {
+        count += values.length;
+      }
+    }
+    setCount(count);
+  }, [searchParams]);
+
+  if (!count) return null;
+
+  return (
+    <div className="flex-center absolute -top-4 -right-4 flex size-7 rounded-full bg-lime-600 text-xs text-white">
+      <span>{count}</span>
     </div>
   );
 };
