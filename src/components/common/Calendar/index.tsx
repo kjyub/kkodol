@@ -59,12 +59,16 @@ const CustomCalendar = ({
     if (selectionMode === 'range' && view === 'month') {
       if (dateStart && !dateEnd) {
         if (dayjs(date).isAfter(dayjs(dateStart), 'day')) {
-          return 'open-range-date';
+          return 'range-date-open';
+        } else if (dayjs(date).isSame(dayjs(dateStart), 'day')) {
+          return 'range-date-start';
         }
       }
       if (dateEnd && !dateStart) {
         if (dayjs(date).isBefore(dayjs(dateEnd), 'day')) {
-          return 'open-range-date';
+          return 'range-date-open';
+        } else if (dayjs(date).isSame(dayjs(dateEnd), 'day')) {
+          return 'range-date-end';
         }
       }
     }
