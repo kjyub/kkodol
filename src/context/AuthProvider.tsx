@@ -11,7 +11,7 @@ const LOCAL_STORAGE_AUTH_KEY = 'kkodol_auth';
 type AuthState = 'loading' | 'authenticated' | 'unauthenticated';
 
 const isAuth = (password: string | null): AuthState => {
-  if (import.meta.env.VITE_NO_AUTH) return 'authenticated';
+  if (Number(import.meta.env.VITE_NO_AUTH)) return 'authenticated';
 
   if (!password) return 'unauthenticated';
 
